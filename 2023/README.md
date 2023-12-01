@@ -2,7 +2,7 @@
 
 | Day | Kotlin |
 |:-|:-|
-| 1 | :yellow_circle: |
+| 1 | :green_circle: |
 | 2 | :red_circle: |
 | 3 | :red_circle: |
 | 4 | :red_circle: |
