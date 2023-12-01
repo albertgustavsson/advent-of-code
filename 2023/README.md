@@ -2,28 +2,28 @@
 
 | Day | Kotlin |
 |:-|:-|
-| 1 | :green_circle: |
-| 2 | :red_circle: |
-| 3 | :red_circle: |
-| 4 | :red_circle: |
-| 5 | :red_circle: |
-| 6 | :red_circle: |
-| 7 | :red_circle: |
-| 8 | :red_circle: |
-| 9 | :red_circle: |
-| 10 | :red_circle: |
-| 11 | :red_circle: |
-| 12 | :red_circle: |
-| 13 | :red_circle: |
-| 14 | :red_circle: |
-| 15 | :red_circle: |
-| 16 | :red_circle: |
-| 17 | :red_circle: |
-| 18 | :red_circle: |
-| 19 | :red_circle: |
-| 20 | :red_circle: |
-| 21 | :red_circle: |
-| 22 | :red_circle: |
-| 23 | :red_circle: |
-| 24 | :red_circle: |
-| 25 | :red_circle: |
+| 1 | :star::star: |
+| 2 |  |
+| 3 |  |
+| 4 |  |
+| 5 |  |
+| 6 |  |
+| 7 |  |
+| 8 |  |
+| 9 |  |
+| 10 |  |
+| 11 |  |
+| 12 |  |
+| 13 |  |
+| 14 |  |
+| 15 |  |
+| 16 |  |
+| 17 |  |
+| 18 |  |
+| 19 |  |
+| 20 |  |
+| 21 |  |
+| 22 |  |
+| 23 |  |
+| 24 |  |
+| 25 |  |

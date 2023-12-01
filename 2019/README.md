@@ -2,28 +2,28 @@
 
 | Day | C |
 |:-|:-|
-| 1 | :green_circle: |
-| 2 | :green_circle: |
-| 3 | :green_circle: |
-| 4 | :green_circle: |
-| 5 | :green_circle: |
-| 6 | :green_circle: |
-| 7 | :green_circle: |
-| 8 | :green_circle: |
-| 9 | :green_circle: |
-| 10 | :green_circle: |
-| 11 | :green_circle: |
-| 12 | :green_circle: |
-| 13 | :green_circle: |
-| 14 | :green_circle: |
-| 15 | :red_circle: |
-| 16 | :red_circle: |
-| 17 | :red_circle: |
-| 18 | :red_circle: |
-| 19 | :red_circle: |
-| 20 | :red_circle: |
-| 21 | :red_circle: |
-| 22 | :red_circle: |
-| 23 | :red_circle: |
-| 24 | :red_circle: |
-| 25 | :red_circle: |
+| 1 | :star::star: |
+| 2 | :star::star: |
+| 3 | :star::star: |
+| 4 | :star::star: |
+| 5 | :star::star: |
+| 6 | :star::star: |
+| 7 | :star::star: |
+| 8 | :star::star: |
+| 9 | :star::star: |
+| 10 | :star::star: |
+| 11 | :star::star: |
+| 12 | :star::star: |
+| 13 | :star::star: |
+| 14 | :star::star: |
+| 15 |  |
+| 16 |  |
+| 17 |  |
+| 18 |  |
+| 19 |  |
+| 20 |  |
+| 21 |  |
+| 22 |  |
+| 23 |  |
+| 24 |  |
+| 25 |  |
