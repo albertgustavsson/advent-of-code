@@ -1,4 +1,4 @@
-package albertgustavsson.adventofcode
+package albertgustavsson.adventofcode.y2023.d01
 
 import java.io.File
 
