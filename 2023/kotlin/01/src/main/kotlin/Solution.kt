@@ -7,7 +7,7 @@ val digitsTranslation = mapOf(
         Pair("one", "1"), Pair("two", "2"), Pair("three", "3"), Pair("four", "4"), Pair("five", "5"), Pair("six", "6"), Pair("seven", "7"), Pair("eight", "8"), Pair("nine", "9"))
 
 fun main(args:Array<String>) {
-    if (args.size != 2) throw IllegalArgumentException("Required arguments: <part> <inputFileName>")
+    require (args.size == 2) { throw IllegalArgumentException("Required arguments: <part> <inputFileName>") }
     val part = args[0].toInt()
     val inputFileName = args[1]
 
@@ -21,6 +21,6 @@ fun main(args:Array<String>) {
         val firstDigit = digitsTranslation.getValue(line.findAnyOf(validDigits)!!.second)
         val lastDigit = digitsTranslation.getValue(line.findLastAnyOf(validDigits)!!.second)
         (firstDigit + lastDigit).toInt()
-    }.reduce { i, j -> i + j }.get()
+    }.reduce(Int::plus).get()
     println(sum)
 }
