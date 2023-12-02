@@ -14,6 +14,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <modules>
+        <module>01</module>
+        <module>02</module>
+    </modules>
+
     <dependencies>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
