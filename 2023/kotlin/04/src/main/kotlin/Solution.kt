@@ -10,20 +10,17 @@ fun main(args:Array<String>) {
 
     val futureCopies = mutableListOf<Int>()
     val sum = File(inputFileName).bufferedReader().lines().map { line ->
-        val cardAndNumbers = line.split(':')
-        val numberLists = cardAndNumbers[1].trim().split('|')
-        val winningNumbersList = numberLists[0].trim().replace("\\s+".toRegex(), " ").split(' ')
-        val winningNumbers = winningNumbersList.map { it.trim().toInt() }
-        val numbersYouHaveList = numberLists[1].trim().replace("\\s+".toRegex(), " ").split(' ')
-        val numbersYouHave = numbersYouHaveList.map { it.trim().toInt() }
+        val numberLists = line.split(':')[1].split('|')
+        val winningNumbers = numberLists[0].trim().split("\\s+".toRegex()).map { it.toInt() }
+        val numbersYouHave = numberLists[1].trim().split("\\s+".toRegex()).map { it.toInt() }
         val matches: Int = winningNumbers.toSet().intersect(numbersYouHave.toSet()).count()
         if (part == 1) {
-            val points = Math.pow(2.0, (matches-1).toDouble()).toInt()
+            val points = Math.pow(2.0, (matches - 1).toDouble()).toInt()
             points
-        } else  {
+        } else {
             val additionalCopies: Int = futureCopies.removeFirstOrNull() ?: 0
             val totalCopies = 1 + additionalCopies
-            futureCopies.addAll(List(max(matches-futureCopies.size, 0)){0})
+            futureCopies.addAll(List(max(matches - futureCopies.size, 0)) { 0 })
             for (i in 0..<matches) {
                 futureCopies[i] += totalCopies
             }
