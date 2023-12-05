@@ -1,6 +1,7 @@
 package albertgustavsson.adventofcode.y2023.d05
 
 import java.io.File
+import kotlin.math.min
 
 fun main(args: Array<String>) {
     require(args.size == 2) { throw IllegalArgumentException("Required arguments: <part> <inputFileName>") }
@@ -19,20 +20,41 @@ fun main(args: Array<String>) {
             maps.last().add(Triple(numbers[0], numbers[1], numbers[2]))
         }
     }
-    val locations = seeds.map { seed ->
-        var tempSource: Long = seed
-        var destination: Long = 0
-        maps.forEach { map ->
-            val triple = map.firstOrNull { (it.second..<(it.second + it.third)).contains(tempSource) }
-            if (triple == null) {
-                destination = tempSource
-            } else {
-                destination = tempSource - triple.second + triple.first
-                tempSource = destination
+
+    var min = Long.MAX_VALUE
+    if (part == 1) {
+        seeds.map { seed ->
+            var tempSource: Long = seed
+            var destination: Long = 0
+            maps.forEach { map ->
+                val triple = map.firstOrNull { (it.second..<(it.second + it.third)).contains(tempSource) }
+                if (triple == null) {
+                    destination = tempSource
+                } else {
+                    destination = tempSource - triple.second + triple.first
+                    tempSource = destination
+                }
+            }
+            min = min(min, destination)
+        }
+    } else {
+        seeds.chunked(2) { Pair(it[0], it[1]) }.forEach {
+            for (seed in it.first..<(it.first+it.second)) {
+                var tempSource: Long = seed
+                var destination: Long = 0
+                maps.forEach { map ->
+                    val triple = map.firstOrNull { (it.second..<(it.second + it.third)).contains(tempSource) }
+                    if (triple == null) {
+                        destination = tempSource
+                    } else {
+                        destination = tempSource - triple.second + triple.first
+                        tempSource = destination
+                    }
+                }
+                min = min(min, destination)
             }
         }
-        destination
     }
 
-    println(locations.min())
+    println(min)
 }
