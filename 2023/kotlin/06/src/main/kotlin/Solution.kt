@@ -13,19 +13,26 @@ fun main(args: Array<String>) {
 
     val timeLineSplit = timeLine.split("\\s+".toRegex())
     val distanceLineSplit = distanceLine.split("\\s+".toRegex())
-    val times: List<Int> = timeLineSplit.subList(1, timeLineSplit.size).map(String::toInt)
-    val distances: List<Int> = distanceLineSplit.subList(1, distanceLineSplit.size).map(String::toInt)
+    val times: List<Long>
+    val distances: List<Long>
+    if (part == 1) {
+        times = timeLineSplit.subList(1, timeLineSplit.size).map(String::toLong)
+        distances = distanceLineSplit.subList(1, distanceLineSplit.size).map(String::toLong)
+    } else {
+        times = listOf(timeLineSplit.subList(1, timeLineSplit.size).reduce(String::plus).toLong())
+        distances = listOf(distanceLineSplit.subList(1, distanceLineSplit.size).reduce(String::plus).toLong())
+    }
     val timesAndDistances = times.zip(distances)
 
     val product = timesAndDistances.map {
         val time = it.first
         val distance = it.second
-        IntRange(0, time).filter {
+        LongRange(0, time).filter {
             // Distance as a function of Time: d=t(time-t)
             val d = it*(time-it)
             d > distance
-        }.count()
-    }.reduce(Int::times)
+        }.count().toLong()
+    }.reduce(Long::times)
 
     println(product)
 }
