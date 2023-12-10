@@ -17,11 +17,19 @@ fun main(args: Array<String>) {
         }
         // Temps is now all zeroes. Add one zero and extrapolate back
         var diff = 0
-        for (i in steps.size-1 downTo  0) {
-            diff = steps[i].last() + diff
-            steps[i].add(diff)
+        if (part == 1) {
+            for (i in steps.size-1 downTo  0) {
+                diff = steps[i].last() + diff
+                steps[i].add(diff)
+            }
+            steps.first().last()
+        } else {
+            for (i in steps.size-1 downTo  0) {
+                diff = steps[i].first() - diff
+                steps[i].add(0, diff)
+            }
+            steps.first().first()
         }
-        steps.first().last()
     }.reduce(Int::plus).get()
 
     println(sum)
