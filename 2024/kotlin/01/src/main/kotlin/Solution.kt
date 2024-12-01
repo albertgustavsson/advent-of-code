@@ -11,28 +11,22 @@ fun main(args:Array<String>) {
     val leftList: MutableList<Int> = mutableListOf()
     val rightList: MutableList<Int> = mutableListOf()
 
-    File(inputFileName).bufferedReader().lines().forEach {
-        val parts = it.split(" ".toRegex()).filter { it.isNotBlank() }
+    File(inputFileName).bufferedReader().lines().forEach { line ->
+        val parts = line.split("\\s+".toRegex())
         leftList.add(parts[0].toInt())
         rightList.add(parts[1].toInt())
     }
 
     if (part == 1) {
-        val leftListSorted = leftList.sorted()
         val rightListSorted = rightList.sorted()
 
-        val distances: MutableList<Int> = mutableListOf()
-
-        leftListSorted.forEachIndexed { index, i ->
-            distances.add(index, abs(i-rightListSorted[index]))
-        }
-        val totalDistances = distances.sum()
+        val totalDistances: Int = leftList.sorted().mapIndexed { index, i ->
+            abs(i-rightListSorted[index])
+        }.sum()
         println(totalDistances)
     } else {
-        var similarityScore: Int = 0
-
-        leftList.forEach { i ->
-            similarityScore += i * rightList.count { it == i }
+        val similarityScore: Int = leftList.sumOf { i ->
+            i * rightList.count { it == i }
         }
         println(similarityScore)
     }
