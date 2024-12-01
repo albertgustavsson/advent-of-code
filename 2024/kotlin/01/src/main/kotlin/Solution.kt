@@ -17,14 +17,23 @@ fun main(args:Array<String>) {
         rightList.add(parts[1].toInt())
     }
 
-    val leftListSorted = leftList.sorted()
-    val rightListSorted = rightList.sorted()
+    if (part == 1) {
+        val leftListSorted = leftList.sorted()
+        val rightListSorted = rightList.sorted()
 
-    val distances: MutableList<Int> = mutableListOf()
+        val distances: MutableList<Int> = mutableListOf()
 
-    leftListSorted.forEachIndexed { index, i ->
-        distances.add(index, abs(i-rightListSorted[index]))
+        leftListSorted.forEachIndexed { index, i ->
+            distances.add(index, abs(i-rightListSorted[index]))
+        }
+        val totalDistances = distances.sum()
+        println(totalDistances)
+    } else {
+        var similarityScore: Int = 0
+
+        leftList.forEach { i ->
+            similarityScore += i * rightList.count { it == i }
+        }
+        println(similarityScore)
     }
-    val totalDistances = distances.sum()
-    println(totalDistances)
 }
