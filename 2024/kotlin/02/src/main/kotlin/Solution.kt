@@ -16,11 +16,31 @@ fun main(args:Array<String>) {
     }.toList()
 
     val safeReports: List<List<Int>> = reports.filter {
-        val differences: List<Int> = it.mapIndexed { index, i -> it.getOrNull(index-1)?.let { it1 -> i-it1 } }.filterNotNull()
-        val minDiff: Int = differences.min()
-        val maxDiff: Int = differences.max()
-        minDiff.sign == maxDiff.sign && (min(abs(minDiff), abs(maxDiff)) >= 1 && max(abs(minDiff), abs(maxDiff)) <= 3)
+        val safe: Boolean = if (part == 1) {
+            reportIsSafe(it)
+        } else {
+            if (reportIsSafe(it)) {
+                true
+            } else {
+                var safe = false
+                for (indexToRemove in it.indices) {
+                    val reportWithOneItemRemoved = it.filterIndexed { index, _ -> index != indexToRemove }
+                    if (reportIsSafe(reportWithOneItemRemoved)) {
+                        safe = true
+                        break
+                    }
+                }
+                safe
+            }
+        }
+        safe
     }
-
     println(safeReports.count())
+}
+
+private fun reportIsSafe(report: List<Int>): Boolean {
+    val differences: List<Int> = report.mapIndexed { index, i -> report.getOrNull(index - 1)?.let { it1 -> i - it1 } }.filterNotNull()
+    val minDiff: Int = differences.min()
+    val maxDiff: Int = differences.max()
+    return minDiff.sign == maxDiff.sign && (min(abs(minDiff), abs(maxDiff)) >= 1 && max(abs(minDiff), abs(maxDiff)) <= 3)
 }
