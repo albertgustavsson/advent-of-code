@@ -11,29 +11,19 @@ fun main(args:Array<String>) {
     val part = args[0].toInt()
     val inputFileName = args[1]
 
-    val reports: List<List<Int>> = File(inputFileName).bufferedReader().lines().map {
-        it.split(" ".toRegex()).filter { it.isNotBlank() }.map { it.toInt() }
+    val reports: List<List<Int>> = File(inputFileName).bufferedReader().lines().map { line ->
+        line.split("\\s+".toRegex()).map { it.toInt() }
     }.toList()
 
-    val safeReports: List<List<Int>> = reports.filter {
-        val safe: Boolean = if (part == 1) {
-            reportIsSafe(it)
+    val safeReports: List<List<Int>> = reports.filter { report ->
+        if (part == 1) {
+            reportIsSafe(report)
         } else {
-            if (reportIsSafe(it)) {
-                true
-            } else {
-                var safe = false
-                for (indexToRemove in it.indices) {
-                    val reportWithOneItemRemoved = it.filterIndexed { index, _ -> index != indexToRemove }
-                    if (reportIsSafe(reportWithOneItemRemoved)) {
-                        safe = true
-                        break
-                    }
-                }
-                safe
+            reportIsSafe(report) || report.indices.any { indexToRemove ->
+                val reportWithOneItemRemoved = report.filterIndexed { index, _ -> index != indexToRemove }
+                reportIsSafe(reportWithOneItemRemoved)
             }
         }
-        safe
     }
     println(safeReports.count())
 }
