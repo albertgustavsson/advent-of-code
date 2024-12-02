@@ -16,6 +16,7 @@
 
     <modules>
         <module>01</module>
+        <module>02</module>
     </modules>
 
     <dependencies>
