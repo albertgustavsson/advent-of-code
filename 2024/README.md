@@ -6,7 +6,7 @@
 | 2   | :star::star: |
 | 3   | :star::star: |
 | 4   | :star::star: |
-| 5   | :star:       |
+| 5   | :star::star: |
 | 6   |              |
 | 7   |              |
 | 8   |              |

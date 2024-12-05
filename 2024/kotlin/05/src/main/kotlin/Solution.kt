@@ -14,11 +14,19 @@ fun main(args:Array<String>) {
     }
     val updates: List<List<Int>> = lines.drop(numberOfOrderingRuleLines+1).map { line -> line.split(",").map { n -> n.toInt() } }
 
-    val orderedUpdates = updates.filter { update -> checkOrder(update, orderingRules)}
+    val orderedUpdates: List<List<Int>> = if (part == 1) {
+        updates.filter { update -> checkOrder(update, orderingRules) }
+    } else {
+        updates.filter { update -> !checkOrder(update, orderingRules) }.map { update -> sortByOrder(update, orderingRules) }
+    }
 
     val middlePageNumbers = orderedUpdates.map { update -> update[update.size/2] }
 
     println("${middlePageNumbers.sum()}")
+}
+
+fun sortByOrder(update: List<Int>, orderingRules: List<Pair<Int, Int>>): List<Int> {
+    return update.sortedWith { i, j -> if (orderingRules.contains(Pair(i, j))) -1 else 1 }
 }
 
 fun checkOrder(update: List<Int>, orderingRules: List<Pair<Int, Int>>): Boolean {
