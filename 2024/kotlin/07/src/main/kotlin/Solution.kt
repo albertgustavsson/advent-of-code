@@ -19,35 +19,35 @@ fun main(args:Array<String>) {
         val testValue = eq.first
         val numbers = eq.second
 
-        val possibleOperatorSequences: List<List<Char>> = generatePossibleSequences(numbers.size - 1)
-
+        val operators = if (part == 1) { listOf("+", "*") } else { listOf("+", "*", "||") }
+        val possibleOperatorSequences: List<List<String>> = generatePossibleSequences(numbers.size - 1, operators)
         possibleOperatorSequences.any { seq -> evaluateEquation(numbers, seq) == testValue }
     }
     println(canBeMadeTrue.map { eq -> eq.first }.sum())
 }
 
-fun evaluateEquation(numbers: List<Long>, seq: List<Char>): Long {
+fun evaluateEquation(numbers: List<Long>, seq: List<String>): Long {
     var result = numbers.first()
 
-    seq.forEachIndexed { index, c ->
-        if (c == '+') result += numbers[index + 1]
-        else if (c == '*') result *= numbers[index + 1]
+    seq.forEachIndexed { index, op ->
+        if (op == "+") result += numbers[index + 1]
+        else if (op == "*") result *= numbers[index + 1]
+        else if (op == "||") result = (result.toString()+numbers[index + 1].toString()).toLong()
     }
 
     return result
 }
 
-fun generatePossibleSequences(length: Int): List<List<Char>> {
-    val permutations: MutableList<List<Char>> = mutableListOf()
-    val operators = listOf('+', '*')
+fun generatePossibleSequences(length: Int, operators: List<String>): List<List<String>> {
+    val permutations: MutableList<List<String>> = mutableListOf()
 
     if (length == 0)
         return listOf(listOf())
 
-    operators.forEach { c ->
-        val possibleShorterSequences = generatePossibleSequences(length-1)
+    operators.forEach { op ->
+        val possibleShorterSequences = generatePossibleSequences(length-1, operators)
         possibleShorterSequences.forEach { seq ->
-            permutations.add(listOf(c) + seq) }
+            permutations.add(listOf(op) + seq) }
         }
 
     return permutations
