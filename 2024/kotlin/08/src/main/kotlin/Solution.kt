@@ -19,13 +19,24 @@ fun main(args:Array<String>) {
                     chars.mapIndexed { c, f -> if (f == char) Pair(r, c) else null } }.filterNotNull().filter { pos -> pos != thisAntenna }
                 otherAntennaPositions.forEach { otherAntenna ->
                     val offset = otherAntenna.minus(thisAntenna)
-                    antiNodes.add(thisAntenna.plus(offset.times(2)))
+                    if (part == 1) {
+                        val antiNode = thisAntenna.plus(offset.times(2))
+                        if (isInMap(grid, antiNode)) {
+                            antiNodes.add(antiNode)
+                        }
+                    } else {
+                        var antiNode = thisAntenna.plus(offset.times(1))
+                        while (isInMap(grid, antiNode)) {
+                            antiNodes.add(antiNode)
+                            antiNode = antiNode.plus(offset)
+                        }
+                    }
                 }
             }
         }
     }
 
-    println(antiNodes.filter { position -> isInMap(grid, position) }.size)
+    println(antiNodes.size)
 }
 
 private fun Pair<Int, Int>.minus(pair: Pair<Int, Int>): Pair<Int, Int> {
