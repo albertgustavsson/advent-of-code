@@ -24,6 +24,7 @@
         <module>07</module>
         <module>08</module>
         <module>09</module>
+        <module>10</module>
     </modules>
 
     <dependencies>
