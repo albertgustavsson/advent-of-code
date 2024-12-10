@@ -10,9 +10,22 @@ fun main(args:Array<String>) {
     val heightMap: List<List<Int>> = File(inputFileName).bufferedReader().lines().map { line -> line.toList().map { c -> c.digitToInt() } }.toList()
 
     val trailHeads: List<Pair<Int, Int>> = heightMap.flatMapIndexed { row, heights -> heights.mapIndexed { column, height -> if (height == 0) Pair(row, column) else null } }.filterNotNull()
-    val totalScore = trailHeads.map { trailhead -> getReachable(heightMap, trailhead, 9).size }.sum()
-
+    val totalScore = trailHeads.map { trailhead ->
+        if (part == 1) {
+            getReachable(heightMap, trailhead, 9).size
+        } else {
+            countPaths(heightMap, trailhead, 9)
+        }
+    }.sum()
     println(totalScore)
+}
+
+fun countPaths(heighMap: List<List<Int>>, position: Pair<Int, Int>, targetHeight: Int) : Int {
+    val startingHeight = heighMap[position.first][position.second]
+    if (startingHeight == targetHeight) return 1
+
+    val neighbors: Set<Pair<Int, Int>> = getNeighbors(heighMap, position, startingHeight+1)
+    return neighbors.map { n -> countPaths(heighMap, n, targetHeight) }.sum()
 }
 
 fun getReachable(heightMap: List<List<Int>>, position: Pair<Int, Int>, targetHeight: Int): Set<Pair<Int, Int>> {
