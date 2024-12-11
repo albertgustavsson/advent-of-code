@@ -15,9 +15,19 @@ fun main(args:Array<String>) {
         .map { s -> s.toLong() }
         .toMutableList()
 
-    val numberOfBLinks = if (part == 1) 25 else 75
-    for (i in 1..numberOfBLinks) {
-        val newStones = stones.flatMap { stone ->
+    val startTime = System.currentTimeMillis()
+    val numberOfBLinks = if (part == 1) 25 else 40
+
+    val newStones = stonesAfterBlinks(stones, numberOfBLinks)
+
+    println("Took ${System.currentTimeMillis() - startTime} ms")
+
+    println(newStones.size)
+}
+
+fun stonesAfterBlinks(stones: List<Long>, blinks: Int): List<Long> {
+    return if (blinks >= 1) {
+        stonesAfterBlinks(stones.flatMap { stone ->
             if (stone == 0L ) {
                 listOf(1)
             } else if (stone.toString().length % 2 == 0) {
@@ -27,9 +37,8 @@ fun main(args:Array<String>) {
             } else {
                 listOf(stone * 2024)
             }
-        }
-        stones = newStones
+        }, blinks-1)
+    } else {
+        stones
     }
-
-    println(stones.size)
 }
