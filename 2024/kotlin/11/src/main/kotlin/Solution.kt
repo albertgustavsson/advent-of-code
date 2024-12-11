@@ -18,27 +18,26 @@ fun main(args:Array<String>) {
     val startTime = System.currentTimeMillis()
     val numberOfBLinks = if (part == 1) 25 else 40
 
-    val newStones = stonesAfterBlinks(stones, numberOfBLinks)
+    val result = stones.map { stone -> stonesAfterBlinks(stone, numberOfBLinks) }.sum()
 
     println("Took ${System.currentTimeMillis() - startTime} ms")
 
-    println(newStones.size)
+    println(result)
 }
 
-fun stonesAfterBlinks(stones: List<Long>, blinks: Int): List<Long> {
+fun stonesAfterBlinks(stone: Long, blinks: Int): Long {
     return if (blinks >= 1) {
-        stonesAfterBlinks(stones.flatMap { stone ->
-            if (stone == 0L ) {
-                listOf(1)
-            } else if (stone.toString().length % 2 == 0) {
-                val firstHalf = stone.toString().substring(0, stone.toString().length/2).toLong()
-                val secondHalf = stone.toString().substring(stone.toString().length/2).toLong()
-                listOf(firstHalf, secondHalf)
-            } else {
-                listOf(stone * 2024)
-            }
-        }, blinks-1)
+        if (stone == 0L) {
+            stonesAfterBlinks(1, blinks-1)
+        } else if (stone.toString().length % 2 == 0) {
+            val firstHalf = stone.toString().substring(0, stone.toString().length/2).toLong()
+            val secondHalf = stone.toString().substring(stone.toString().length/2).toLong()
+
+            stonesAfterBlinks(firstHalf, blinks-1) + stonesAfterBlinks(secondHalf, blinks-1)
+        } else {
+            stonesAfterBlinks(stone * 2024, blinks-1)
+        }
     } else {
-        stones
+        1
     }
 }
