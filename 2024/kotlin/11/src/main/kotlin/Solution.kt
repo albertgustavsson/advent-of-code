@@ -7,7 +7,7 @@ fun main(args:Array<String>) {
     val part = args[0].toInt()
     val inputFileName = args[1]
 
-    val stones: MutableList<Long> = File(inputFileName)
+    var stones: List<Long> = File(inputFileName)
         .bufferedReader()
         .readText()
         .split("\\s+".toRegex())
@@ -15,22 +15,20 @@ fun main(args:Array<String>) {
         .map { s -> s.toLong() }
         .toMutableList()
 
-    for (i in 0..<25) {
-        var index = 0
-        while (index in stones.indices) {
-            if (stones[index] == 0L ) {
-                stones[index] = 1
-            } else if (stones[index].toString().length % 2 == 0) {
-                val firstHalf = stones[index].toString().substring(0, stones[index].toString().length/2).toLong()
-                val secondHalf = stones[index].toString().substring(stones[index].toString().length/2).toLong()
-                stones[index] = firstHalf
-                stones.add(index+1, secondHalf)
-                index++
+    val numberOfBLinks = if (part == 1) 25 else 75
+    for (i in 1..numberOfBLinks) {
+        val newStones = stones.flatMap { stone ->
+            if (stone == 0L ) {
+                listOf(1)
+            } else if (stone.toString().length % 2 == 0) {
+                val firstHalf = stone.toString().substring(0, stone.toString().length/2).toLong()
+                val secondHalf = stone.toString().substring(stone.toString().length/2).toLong()
+                listOf(firstHalf, secondHalf)
             } else {
-                stones[index] = stones[index] * 2024
+                listOf(stone * 2024)
             }
-            index++
         }
+        stones = newStones
     }
 
     println(stones.size)
