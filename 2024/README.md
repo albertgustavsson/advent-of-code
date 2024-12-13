@@ -14,7 +14,7 @@
 | 10  | :star::star: |
 | 11  | :star::star: |
 | 12  | :star::star: |
-| 13  | :star:       |
+| 13  | :star::star: |
 | 14  |              |
 | 15  |              |
 | 16  |              |
