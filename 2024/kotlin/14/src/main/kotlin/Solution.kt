@@ -1,6 +1,7 @@
 package albertgustavsson.adventofcode.y2024.d14
 
 import java.io.File
+import java.util.*
 
 fun main(args:Array<String>) {
     require (args.size == 2) { throw IllegalArgumentException("Required arguments: <part> <inputFileName>") }
@@ -16,22 +17,57 @@ fun main(args:Array<String>) {
 
     val roomSize = Pair(101, 103)
     val border = Pair(roomSize.first / 2, roomSize.second / 2)
-    val time = 100
-    val endPositions = robots.map { robot ->
-        robot.first.plus(robot.second.multiplyBy(time)).positiveModulo(roomSize)
-    }.toList()
+    val result = if (part == 1) {
+        val time = 100
+        val endPositions = robots.map { robot ->
+            robot.first.plus(robot.second.multiplyBy(time)).positiveModulo(roomSize)
+        }.toList()
 
-    val robotsByQuadrant = endPositions.groupBy { position ->
-        if (position.first < border.first && position.second < border.second) 1
-        else if (position.first > border.first && position.second < border.second) 2
-        else if (position.first < border.first && position.second > border.second) 3
-        else if (position.first > border.first && position.second > border.second) 4
-        else 0
+        val robotsByQuadrant = endPositions.groupBy { position ->
+            if (position.first < border.first && position.second < border.second) 1
+            else if (position.first > border.first && position.second < border.second) 2
+            else if (position.first < border.first && position.second > border.second) 3
+            else if (position.first > border.first && position.second > border.second) 4
+            else 0
+        }
+
+        robotsByQuadrant.filterNot { entry -> entry.key == 0 }.values.map { positions -> positions.size }.reduce { acc, i -> acc * i }
+    } else {
+        var time = 0
+        var stopped = false
+        val scanner = Scanner(System.`in`)
+
+        while (!stopped) {
+            val endPositions = robots.map { robot ->
+                robot.first.plus(robot.second.multiplyBy(time)).positiveModulo(roomSize)
+            }.toList()
+
+            val map: List<List<Char>> = createPositionsMap(endPositions, roomSize)
+            map.forEach { line ->
+                line.forEach { c -> print(c) }
+                println()
+            }
+
+            println("After $time seconds")
+            print("Keep going? (enter) Type anything to stop: ")
+            val line: String = scanner.nextLine()
+            if (line.isBlank()) {
+                time++
+            } else {
+                stopped = true
+            }
+        }
+        scanner.close()
+        time
     }
 
-    val result = robotsByQuadrant.filterNot { entry -> entry.key == 0 }.values.map { positions -> positions.size }.reduce { acc, i -> acc * i }
-
     println(result)
+}
+
+fun createPositionsMap(positions: List<Pair<Int, Int>>, roomSize: Pair<Int, Int>): List<List<Char>> {
+    val map = List(roomSize.second) { MutableList(roomSize.first) {' '} }
+    positions.forEach { pos -> map[pos.second][pos.first]='■' }
+    return map
 }
 
 private fun Pair<Int, Int>.plus(pair: Pair<Int, Int>): Pair<Int, Int> {
