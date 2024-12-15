@@ -10,7 +10,20 @@ fun main(args:Array<String>) {
     val fileContents: String = File(inputFileName).bufferedReader().readText()
     val parts = fileContents.split("\r?\n\\s*\r?\n".toRegex())
 
-    val map: List<MutableList<Char>> = parts[0].split("\r?\n".toRegex()).map { line -> line.toMutableList() }
+    val map: List<MutableList<Char>> = parts[0].split("\r?\n".toRegex()).map { line -> line.toList().flatMap { c ->
+            if (part == 1) {
+                listOf(c)
+            } else {
+                when(c) {
+                    '#' -> "##"
+                    'O' -> "[]"
+                    '.' -> ".."
+                    '@' -> "@."
+                    else -> ""
+                }.toList()
+            }
+        }.toMutableList()
+    }
     val movements: List<Char> = parts[1].toList().filterNot { c -> c.isWhitespace() }
 
     movements.forEach { c ->
@@ -24,7 +37,7 @@ fun main(args:Array<String>) {
         moveIfPossible(map, dir)
     }
 
-    val gpsCoordinates = map.flatMapIndexed { row: Int, chars: List<Char> -> chars.mapIndexed { column, c -> Pair(Pair(row, column), c) } }.filter { pair -> pair.second == 'O' }.map { pair -> pair.first.first * 100 + pair.first.second }
+    val gpsCoordinates = map.flatMapIndexed { row: Int, chars: List<Char> -> chars.mapIndexed { column, c -> Pair(Pair(row, column), c) } }.filter { pair -> pair.second == 'O' || pair.second == '[' }.map { pair -> pair.first.first * 100 + pair.first.second }
 
     println(gpsCoordinates.sum())
 }
@@ -39,14 +52,77 @@ fun moveIfPossible(map: List<MutableList<Char>>, dir: Pair<Int, Int>) {
 fun moveIfPossible(map: List<MutableList<Char>>, dir: Pair<Int, Int>, position: Pair<Int, Int>): Boolean {
     if (map[position.first][position.second] == '#') return false
     if (map[position.first][position.second] == '.') return true
-    val newPosition = position.plus(dir)
-    val possible = moveIfPossible(map, dir, newPosition)
-    return if (possible) {
-        map[newPosition.first][newPosition.second] = map[position.first][position.second]
-        map[position.first][position.second] = '.'
-        true
+    return if (canMove(map, dir, position)) {
+        val newPosition = position.plus(dir)
+        if (map[position.first][position.second] == 'O') {
+            val possible = moveIfPossible(map, dir, newPosition)
+            if (possible) {
+                map[newPosition.first][newPosition.second] = map[position.first][position.second]
+                map[position.first][position.second] = '.'
+                true
+            } else {
+                false
+            }
+        } else if (map[position.first][position.second] == '[') {
+            if (dir != Pair(0, 1)) {
+                moveIfPossible(map, dir, newPosition)
+                map[newPosition.first][newPosition.second] = '['
+                map[position.first][position.second] = '.'
+                moveIfPossible(map, dir, newPosition.plus(Pair(0, 1)))
+                map[newPosition.plus(Pair(0, 1)).first][newPosition.plus(Pair(0, 1)).second] = ']'
+                map[position.plus(Pair(0, 1)).first][position.plus(Pair(0, 1)).second] = '.'
+                true
+            } else if (dir == Pair(0, 1)) {
+                moveIfPossible(map, dir, newPosition.plus(Pair(0, 1)))
+                map[newPosition.plus(Pair(0, 1)).first][newPosition.plus(Pair(0, 1)).second] = ']'
+                map[position.plus(Pair(0, 1)).first][position.plus(Pair(0, 1)).second] = '.'
+                moveIfPossible(map, dir, newPosition)
+                map[newPosition.first][newPosition.second] = '['
+                map[position.first][position.second] = '.'
+                true
+            } else false
+        } else if (map[position.first][position.second] == ']') {
+            if (dir != Pair(0,-1)) {
+                moveIfPossible(map, dir, newPosition)
+                map[newPosition.first][newPosition.second] = ']'
+                map[position.first][position.second] = '.'
+                moveIfPossible(map, dir, newPosition.plus(Pair(0,-1)))
+                map[newPosition.plus(Pair(0,-1)).first][newPosition.plus(Pair(0,-1)).second] = '['
+                map[position.plus(Pair(0,-1)).first][position.plus(Pair(0,-1)).second] = '.'
+                true
+            } else if (dir == Pair(0,-1)) {
+                moveIfPossible(map, dir, newPosition.plus(Pair(0,-1)))
+                map[newPosition.plus(Pair(0,-1)).first][newPosition.plus(Pair(0,-1)).second] = '['
+                map[position.plus(Pair(0,-1)).first][position.plus(Pair(0,-1)).second] = '.'
+                moveIfPossible(map, dir, newPosition)
+                map[newPosition.first][newPosition.second] = ']'
+                map[position.first][position.second] = '.'
+                true
+            } else false
+        } else if (map[position.first][position.second] == '@') {
+            val possible = moveIfPossible(map, dir, newPosition)
+            if (possible) {
+                map[newPosition.first][newPosition.second] = map[position.first][position.second]
+                map[position.first][position.second] = '.'
+                true
+            } else false
+        } else {
+            false
+        }
     } else {
         false
+    }
+}
+
+fun canMove(map: List<MutableList<Char>>, dir: Pair<Int, Int>, position: Pair<Int, Int>): Boolean {
+    val newPosition = position.plus(dir)
+    return when(map[newPosition.first][newPosition.second]) {
+        '#' -> false
+        '.' -> true
+        'O' -> canMove(map, dir, newPosition)
+        '[' -> canMove(map, dir, newPosition) && (dir == Pair(0,-1) || canMove(map, dir, newPosition.plus(Pair(0,1))))
+        ']' -> canMove(map, dir, newPosition) && (dir == Pair(0,1) || canMove(map, dir, newPosition.plus(Pair(0,-1))))
+        else -> false
     }
 }
 
